@@ -38,8 +38,10 @@ app.use('/api/support', require('./routes/support'));
 
 app.use(express.static(publicPath)); // Serve index.html from /public
 
-server.listen(process.env.PORT, ( err )=>{
+const PORT = process.env.PORT ||3000;
+
+server.listen(PORT, ( err )=>{
     if (err) throw new Error(err);
 
-    console.log('Servidor corriendo en puerto!: ',process.env.PORT);
+    console.log('Servidor corriendo en puerto!: ',PORT);
 });
