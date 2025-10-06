@@ -11,8 +11,9 @@ const validateJWT = (req, res, next)=>{
     }
 
     try {
-        const {uid}=jwt.verify(token, process.env.JWT_KEY);
+        const {uid, role}=jwt.verify(token, process.env.JWT_KEY);
         req.uid = uid;
+        req.role = role;
         
         next();    
     } catch (error) {

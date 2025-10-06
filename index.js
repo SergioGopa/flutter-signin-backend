@@ -24,9 +24,17 @@ require('./sockets/socket'); // Loads socket logic (the call operator)
 //Path publico
 const publicPath = path.resolve(__dirname,'public');  // Static files location
 
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.originalUrl} - Body:`, req.body, 'Headers:', req.headers['x-token']);
+  next();
+});
+
+
 //My routes
 app.use('/api/signup',require('./routes/auth'));
 app.use('/api/signin',require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/support', require('./routes/support'));
 
 app.use(express.static(publicPath)); // Serve index.html from /public
 

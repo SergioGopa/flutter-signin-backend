@@ -19,15 +19,15 @@ const createUser = async (req, res = response)=>{
         }
         const user = new User(req.body);
 
-        //Generate JWT
-        const token = await generateJWT(user.id);
-
         //encrypt password
         const salt = bcrypt.genSaltSync();
         user.password = bcrypt.hashSync(password, salt);
 
         await user.save();
-        
+
+        //Generate JWT
+        const token = await generateJWT(user.id, user.role);
+
         res.json({
             ok:true,
             user,
@@ -66,7 +66,7 @@ const signin = async (req, res = response)=>{
         }
 
         //Generate JWT
-        const token = await generateJWT(userDB.id);
+        const token = await generateJWT(userDB.id, userDB.role);
 
         
         res.json({
@@ -87,18 +87,33 @@ const signin = async (req, res = response)=>{
 const renewToken = async(req, res =response)=>{
     const uid = req.uid;
 
-    //generate new JWT
-    const token = await generateJWT(uid);
+    try {
+        //get user from DB,
+        const user = await User.findById(uid);
 
-    //get user by ID,
-    const user = await User.findById(uid);
+        if (!user) {
+            return res.status(404).json({
+                ok:false,
+                msg: 'User not found'
+            });
+        }
 
-    res.json({
+        //generate new JWT
+        const token = await generateJWT(uid, user.role);
+
+        res.json({
         ok:true,
         user,
         token
-    });
-    
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok:false,
+            msg:'Talk to the admin'
+        });
+    };
 }
 
 module.exports = {
