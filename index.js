@@ -31,10 +31,13 @@ app.use((req, res, next) => {
 
 
 //My routes
-app.use('/api/signup',require('./routes/auth'));
-app.use('/api/signin',require('./routes/auth'));
-app.use('/api/users', require('./routes/users'));
+app.use('/api/auth',require('./routes/auth'));
+app.use('/api/users',require('./routes/users'));
 app.use('/api/support', require('./routes/support'));
+// app.use('/api/signup',require('./routes/auth'));
+// app.use('/api/signin',require('./routes/auth'));
+// app.use('/api/users', require('./routes/users'));
+// app.use('/api/support', require('./routes/support'));
 
 app.use(express.static(publicPath)); // Serve index.html from /public
 

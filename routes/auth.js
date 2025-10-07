@@ -11,7 +11,7 @@ const { validateJWT } = require('../middlewares/validate-jwt');
 
 const router = Router();
 
-router.post('/new', [
+router.post('/signup', [
     check('name','Name is mandatory').not().isEmpty(),
     check('email','Must be an email format').isEmail(),
     check('email','email is mandatory').not().isEmpty(),
@@ -21,7 +21,7 @@ router.post('/new', [
     
 ] ,createUser);
 
-router.post('/', [
+router.post('/signin', [
     check('email','Must be an email format').isEmail(),
     check('email','email is mandatory').not().isEmpty(),
     check('password','Password must be at least 6 characters long').isLength({min:6}),
